@@ -1,18 +1,29 @@
 class Solution {
 public:
     void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-        vector<int> r;
-        for(int i= 0;i<m;i++){
-            r.push_back(nums1[i]);
+        // Gap Method
+        
+        int cnt = 0;
+        for(int i=m;i<m+n;i++){
+            nums1[i] = nums2[cnt];
+            cnt++;
         }
-        for(int i=0;i<n;i++){
-            r.push_back(nums2[i]);
+        int gap = ceil((m+n)/2.0);
+        
+        while(gap>=1){
+            int lo = 0;
+            int hi = lo+gap;
+            while(hi<m+n){
+                if(nums1[hi]<=nums1[lo]) {
+                  swap(nums1[lo],nums1[hi]);
+                }
+                lo++;
+                hi++;
+            }
+            if(gap==1) break;
+            gap = ceil(gap/2.0);
         }
-        sort(r.begin(),r.end());
         
         
-        for(int i=0;i<r.size();i++){
-            nums1[i] = r[i];
-        }
     }
 };
