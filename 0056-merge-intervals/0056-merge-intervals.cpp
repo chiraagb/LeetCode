@@ -2,38 +2,29 @@ class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
         
-        int rows = intervals.size();
-        
-        if(rows==1) return intervals;
-        sort(intervals.begin(),intervals.end());
+        int n = intervals.size();
         vector<vector<int>> r;
-        //In the sorted array, if start time of an interval is less than end of previous interval, then there is an overlap.
         
-        int a = intervals[0][0];
-        int b = intervals[0][1];
+        if(n == 0) return r;
         
-        for(int i=1;i<rows;i++){
-            int start = intervals[i][0];
-            int end = intervals[i][1];
-            
-            
-            if(start>=a && start<=b){
-                a=min(a,start);
-                b=max(b,end);
-                if(i==rows-1){
-                    r.push_back({a,b});
-                }
+        sort(intervals.begin(),intervals.end());
+        
+        // intervals[0] = [1,3]
+        // temp[0] = 1
+        // temp[1] = 3
+        vector<int> temp = intervals[0];
+        
+        
+        for(int i=1;i<n;i++){
+            if(intervals[i][0]<=temp[1]){
+                temp[1] = max(intervals[i][1],temp[1]);
             }
             else{
-                r.push_back({a,b});
-                a=start;
-                b=end;
-                if(i==rows-1){
-                    r.push_back({start,end});
-                }
+                r.push_back(temp);
+                temp = intervals[i];
             }
-            
         }
+        r.push_back(temp);
         
         
         return r;
