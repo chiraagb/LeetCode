@@ -8,18 +8,35 @@
  */
 class Solution {
 public:
-    ListNode *detectCycle(ListNode *head) {
-        if(head == NULL || head->next==NULL) return NULL ;
-        unordered_map<ListNode*,bool> mp;
+    ListNode *floydDetectionLoop(ListNode *head){
+        if(head == NULL || head->next==NULL) return NULL;
         
-        ListNode *curr = head;
-        while(curr!=NULL){
-            if(mp[curr] == true){
-                return curr;
+        ListNode*s = head;
+        ListNode*f = head;
+        
+        while(f->next && f->next->next){
+            s = s->next;
+            f = f->next->next;
+            if(s==f){
+                return s;
             }
-            mp[curr] = true;
-            curr=curr->next;
         }
         return NULL;
+    }
+    ListNode *detectCycle(ListNode *head) {
+         // Step 1: find s==f
+        // Step 2: find entry==s //this is a cycle
+        
+        if(head == NULL || head->next==NULL) return NULL;
+        
+        ListNode *s = floydDetectionLoop(head);
+        if(s == NULL) return NULL;
+        ListNode *entry = head;
+        while(s != entry){
+            s = s->next;
+            entry=entry->next;
+        }
+        return s;
+        
     }
 };
