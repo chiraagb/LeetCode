@@ -12,14 +12,47 @@ public:
         /**
         Brute Force O(m+n) || O(n)
         **/
-        while(headB!=NULL){
-            ListNode *temp = headA;
-            while(temp!=NULL){
-                if(temp==headB) return headB;
-                temp = temp->next;
+        
+        int cntA = 0;
+        int cntB = 0;
+        ListNode *dummyA = headA;
+        ListNode *dummyB = headB;
+        
+        while(dummyA!=NULL){
+            cntA++;
+            dummyA = dummyA->next;
+        }
+        while(dummyB!=NULL){
+            cntB++;
+            dummyB = dummyB->next;
+        }
+        
+        int diff = abs(cntA-cntB);
+        
+        
+        if(cntA>cntB){
+            while(diff){
+                headA = headA->next;
+                diff--;
             }
+        }
+        
+        else{
+            while(diff){
+                headB = headB->next;
+                diff--;
+            }
+        }
+        
+        while(headA && headB){
+            if(headA == headB) {
+              return headA;  
+            } 
+            headA = headA->next;
             headB = headB->next;
         }
         return NULL;
+        
+        
     }
 };
