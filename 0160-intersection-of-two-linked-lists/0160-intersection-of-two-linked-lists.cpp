@@ -10,49 +10,21 @@ class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
         /**
-        Brute Force O(m+n) || O(n)
+        Best Optimal O(m+n) || O(1)
         **/
         
-        int cntA = 0;
-        int cntB = 0;
-        ListNode *dummyA = headA;
-        ListNode *dummyB = headB;
         
-        while(dummyA!=NULL){
-            cntA++;
-            dummyA = dummyA->next;
+        if(headA==NULL || headB==NULL){
+            return NULL;
         }
-        while(dummyB!=NULL){
-            cntB++;
-            dummyB = dummyB->next;
+        ListNode *a = headA;
+        ListNode *b = headB;
+        
+        while(a!=b){
+            a = a==NULL? headB : a->next;
+            b = b==NULL? headA : b->next;
         }
         
-        int diff = abs(cntA-cntB);
-        
-        
-        if(cntA>cntB){
-            while(diff){
-                headA = headA->next;
-                diff--;
-            }
-        }
-        
-        else{
-            while(diff){
-                headB = headB->next;
-                diff--;
-            }
-        }
-        
-        while(headA && headB){
-            if(headA == headB) {
-              return headA;  
-            } 
-            headA = headA->next;
-            headB = headB->next;
-        }
-        return NULL;
-        
-        
+        return a;
     }
 };
