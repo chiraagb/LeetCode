@@ -17,18 +17,38 @@ public:
 class Solution {
 public:
     Node* copyRandomList(Node* head) {
-        unordered_map<Node*,Node*> mp;
-        Node *temp = head;
-        while(temp!=NULL){
-            mp[temp] = new Node(temp->val);
-            temp = temp->next;
+        Node *iter = head;
+        Node *front = head;
+        
+        // Step 1 : 
+        while(iter!=NULL){
+            front = iter->next;
+            Node *copy = new Node(iter->val);
+            iter->next=copy;
+            copy->next = front;
+            iter = front;
         }
-        temp = head;
-        while(temp!=NULL){
-            mp[temp]->next = mp[temp->next];
-            mp[temp]->random = mp[temp->random];
-            temp=temp->next;
+        
+        // Step 2:
+        iter = head;
+        while(iter!=NULL){
+            if(iter->random != NULL){
+                iter->next->random = iter->random->next;
+            }
+            iter = iter->next->next;
         }
-        return mp[head];
+        // Step: 3
+        iter = head;
+        Node *pseudoHead = new Node(0);
+        Node *copy = pseudoHead;
+        
+        while(iter!=NULL){
+            front= iter->next->next;
+            copy->next = iter->next;
+            iter->next=front;
+            copy=copy->next;
+            iter=front;
+        }
+        return pseudoHead->next;
     }
 };
